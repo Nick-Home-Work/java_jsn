@@ -1,10 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-</head>
-<body>
+<!doctype html>
+<html lang="ru">
 
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<!--<link rel="stylesheet" href="style.css" /> -->
+	<style>
+		body {
+			text-align: center;
+		}
+
+		.answer {
+			width: 700px;
+			min-height: 300px;
+			text-align: center;
+			margin: 0 auto;
+		}
+
+	</style>
+</head>
+
+<body>
+	<h1>домашняя работа</h1>
+	<div class="answer">
+		задание 3<br>
+		отработало сразу<br><br>
+		<script>
+			let name = 'Василий';
+			let admin = 'админ';
+			admin = name;
+			alert(admin);
+		</script>
+		задание 4<br>
+		ответ - 1000108<br><br><br>
+		задание 5<br>
+		async - Страница не ждёт асинхронных скриптов, содержимое обрабатывается и отображается.
+		Остальные скрипты не ждут async, и скрипты casync не ждут другие скрипты.<br>
+		Так что если у нас есть несколько скриптов с async, они могут выполняться в любом порядке. То, что первое загрузится – запустится в первую очередь<br><br><br>
+
+		defer - сообщает браузеру, что он должен продолжать обрабатывать страницу и загружать скрипт в фоновом режиме, а затем запустить этот скрипт, когда он загрузится.
+	</div>
+	<script src="prompt.js"> </script>
 </body>
+
 </html>
