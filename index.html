@@ -25,188 +25,151 @@
 <body>
 	<h1>домашняя работа</h1>
 	<script>
-		"use strict"; {
-			console.log('задача 1');
-
-
-			let a = 1,
-				b = 1,
-				c, d;
-
-			c = ++a;
-			console.log(c + '//2  ++ увеличивает значение на 1');
-
-			d = b++;
-			console.log(d + ' //1  сначала вернул значение а потом ++');
-
-			c = (2 + ++a);
-			console.log(c + ' // 5  после присвоения с  а = 2');
-
-			d = (2 + b++);
-			console.log(d + '  //4  после присвоения d  b = 2 а потом ++ (2+2)');
-
-			console.log(a + '//при присвоени с (+1), присвоение со сложением еще(+1) да был 1 = 3 ');
-
-			console.log(b + '//при присвоени d (+1), присвоение со сложением еще(+1) да был 1 = 3');
-		} {
-			console.log('задача 2 \n 5 приоритет *');
-			var a = 2;
-			var x = 1 + (a *= 2); //5 приоритет *
-		} {
-
-			console.log('задача3');
-
-			var a = +prompt('задание 3 введите число как требует задача');
-			var b = +prompt('введите еще одно число');
-			var d = a >= 0 && b >= 0 ? a + b : a < 0 && b < 0 ? a * b : a + b;
-			console.log('Ваши числа ' + a + ' и ' + b + ' результат = ' + d);
-		}
-
-		{
-
-			console.log('задача4');
-
-			var a = Math.floor(Math.random() * 15);
-			console.log('Полученное random число ' + a);
-			switch (a) {
-				case 0:
-					console.log('[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]');
-					break;
-				case 1:
-					console.log('[2,3,4,5,6,7,8,9,10,11,12,13,14,15]');
-					break;
-				case 2:
-					console.log('[3,4,5,6,7,8,9,10,11,12,13,14,15]');
-					break;
-				case 3:
-					console.log('[4,5,6,7,8,9,10,11,12,13,14,15]');
-					break;
-				case 4:
-					console.log('[5,6,7,8,9,10,11,12,13,14,15]');
-					break;
-				case 5:
-					console.log('[6,7,8,9,10,11,12,13,14,15]');
-					break;
-				case 6:
-					console.log('[7,8,9,10,11,12,13,14,15]');
-					break;
-				case 7:
-					console.log('[8,9,10,11,12,13,14,15]');
-					break;
-				case 8:
-					console.log('[9,10,11,12,13,14,15]');
-					break;
-				case 9:
-					console.log('[10,11,12,13,14,15]');
-					break;
-				case 10:
-					console.log('[11,12,13,14,15]');
-					break;
-				case 11:
-					console.log('[12,13,14,15]');
-					break;
-				case 12:
-					console.log('[13,14,15]');
-					break;
-				case 13:
-					console.log('[14,15]');
-					break;
-				case 14:
-					console.log('[15]');
-					break;
-				default:
-					console.log('Это почледнее число массива!');
-			}
-		} {
-			console.log('задача5');
-
-			let a = Math.floor(Math.random() * 50);
-			let b = Math.floor(Math.random() * 50);
-
-			console.log('выпавшие числа ' + a + ' и ' + b);
-
-			function addition(a, b) {
-				return a + b;
-			}
-
-			function subtraction(a, b) {
-				return a - b;
-			}
-
-			function multiplication(a, b) {
-				return a * b;
-			}
-
-			function division(a, b) {
-				return a / b;
-			}
-			let c = addition(a, b);
-			console.log('сложение = ' + c);
-			let d = subtraction(a, b);
-			console.log('вычитание = ' + d);
-			let r = multiplication(a, b);
-			console.log('умножение = ' + r);
-			let m = division(a, b);
-			console.log('деление = ' + m);
-		} {
-			console.log('задача6');
-
-			let a = Math.floor(Math.random() * 50);
-			let b = Math.floor(Math.random() * 50);
-			console.log('выпавшие числа ' + a + ' и ' + b);
-
-			function operation(arg1 = 2, arg2 = 1, operation = 'сложение') {
-				switch (operation) {
-					case 'сложение':
-						console.log(arg1 + arg2);
+		"use strict";
+		//задание1
+		//получение числа и проверки + преобразование строки здесь
+		loop:
+			while (true) {
+				var r = prompt('введите числа от 1 до 999');
+				let num = r.length;
+				switch (num) {
+					case 1:
+						r = '00' + r;
 						break;
-					case 'вычитание':
-						console.log(arg1 - arg2);
+					case 2:
+						r = '0' + r;
 						break;
-					case 'деление':
-						console.log(arg1 / arg2);
-						break;
-					case 'умножение':
-						console.log(arg1 * arg2);
+					case 3:
+						r;
 						break;
 					default:
-						console.log('Вы написали что  -то не то! -' + operation);
+						alert('Вы ввели что то не то!');
+						continue loop;
 				}
+				break;
 			}
-			operation(a, b);
-		} {
-			console.log('задача 7');
 
-			console.log('	null > 0; // false приобразуем к типу Number null  преобразовано в +0, а 0 останется самим собой.');
-
-			console.log('null < 0; // тоже false  являются одинаковыми числовыми значениями - вернуть false. +0 = 0')
-
-			console.log('null == 0; //false  разные типы - по умщлчанию false')
-
-			console.log('null >= 0; // true Если null < 0 принимает значение false, то null >= 0 принимает значение true - логика')
-		} {
-			console.log('задача8');
-			let a = Math.floor(Math.random() * 10);
-			let b = Math.floor(Math.random() * 5);
-			console.log('выпавшие числа ' + a + ' и ' + b);
-
-			function power(val, pow) {
-				return pow ? val * power(val, pow - 1) : 1;
+		//преобразует в необходимый нам обьект
+		function sfringToObject(a) {
+			var obj = new String(r);
+			return {
+				единицы: a[2],
+				десятки: a[1],
+				сотни: a[0]
 			}
-			let result = power(a, b);
-			console.log(result);
-		} {
 
-			console.log('дополнитедьное');
-			let a = +prompt('а введите ка число и функция конвертирует кго в строку - а если будет отрицательное будкт срока-иодуль - результат в консоль')
-
-			function converted(val) {
-				const result = val > 0 ? val + '' : '|' + (val + '').slice(1) + '|';
-				return result;
-			}
-			var result = converted(a);
-			console.log(result);
 		}
+
+		var d = sfringToObject(r);
+		console.log(d);
+
+
+
+		//задание корзина
+
+		//товары и цены
+		let goods = [{
+				name: "футболка",
+				price: 1000,
+
+			},
+			{
+				name: "костюм",
+				price: 3000,
+
+			},
+			{
+				name: "пальто",
+				price: 8000,
+
+			},
+			{
+				name: "пуховик",
+				price: 4000,
+
+			}
+		];
+
+		//обьявил корзину
+		var backet = [];
+
+		//добавляет обьект в корзину index - индекс обьекта из базы товара count - количество товара base - из какой базы товар
+		function pushBacket(i, count, base) {
+
+			let result = {
+				name: base[i].name,
+				price: base[i].price,
+				count: count,
+				sum: base[i].price * count
+			}
+
+			backet.push(result);
+		}
+
+		//добавляет товар в корзину
+		function addGoodBacket(index, count = 1) {
+
+			for (var i in backet) {
+
+				if (backet[i].name === goods[index].name) {
+					let result =
+						backet[i].count += count;
+					backet[i].sum = backet[i].price * backet[i].count;
+					return console.log(backet);
+				}
+
+			}
+
+			pushBacket(index, count, goods);
+
+			return console.log(backet);
+
+		}
+
+
+		//показывает все доступные товары и их цены
+		function showGoods(g) {
+			var order = g.reduce(function(prev, curr) {
+				return [...prev, curr.name, curr.price + ' рублей']
+			}, ['на сегодня в наличии :']).join('\n');
+			console.log(order);
+		}
+
+
+		//выводит сумму товаров в корзине
+		function countBasketPrice(backet) {
+			var initialValue = 0;
+			var sum = backet.reduce(
+				(result, Val) => result + Val.sum,
+				initialValue
+			);
+			return sum;
+		}
+
+		//показывает что лежит в корзине
+		function showBacket(g) {
+			let order = g.reduce(function(prev, curr) {
+				return [...prev, curr.name, curr.count + ' шт', curr.sum + ' рублей']
+			}, ['В корзине :']).join('\n');
+			console.log(order);
+		}
+
+
+		//добавляем в корзину по индексу товара второй параметр количество
+		addGoodBacket(2, );
+		addGoodBacket(0, 2);
+		addGoodBacket(2, 2);
+
+
+		//вызвана функция показа товара приняла - товары
+		showGoods(goods);
+
+		//вызвана функция показа содержания корзины  приняла - корзину
+		showBacket(backet);
+
+		//вызвана ф-я сумма товаров в корзине
+		let b = countBasketPrice(backet);
+		console.log('Итого: ' + b);
 
 	</script>
 </body>
