@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<!--<link rel="stylesheet" href="style.css" /> -->
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			font-size: 20px;
+		}
+
+		#catalog {
+			margin: 100px auto;
+			width: 400px;
+			min-height: 300px;
+			border: 1px solid #808080;
+
+		}
+
+		#catalog input {
+			margin-left: 50px;
+			margin-right: 50px;
+			width: 50px;
+			height: 20px;
+		}
+
+		#baket {
+			float: right;
+			margin-bottom: 10px;
+			margin-right: 10px;
+			width: 300px;
+			min-height: 80px;
+			border: 1px solid #808080;
+		}
+
+	</style>
+</head>
+
+<body>
+	<div id="catalog">
+
+	</div>
+
+	<div id="baket">
+
+	</div>
+	<script>
+		"use strict";
+		//задание корзина
+
+		//товары и цены
+		let goods = [{
+				name: "футболка",
+				price: 1000,
+
+			},
+			{
+				name: "костюм",
+				price: 3000,
+
+			},
+			{
+				name: "пальто",
+				price: 8000,
+
+			},
+			{
+				name: "пуховик",
+				price: 4000,
+
+			}
+		];
+
+		//обьявил корзину
+		var backet = [];
+
+		//добавляет обьект в корзину index - индекс обьекта из базы товара count - количество товара base - из какой базы товар
+		function pushBacket(i, count, base) {
+
+			let result = {
+				name: base[i].name,
+				price: base[i].price,
+				count: count,
+				sum: base[i].price * count
+			}
+
+			backet.push(result);
+		}
+
+		//добавляет товар в корзину
+		function addGoodBacket(index, count = 1) {
+
+			for (var i in backet) {
+
+				if (backet[i].name === goods[index].name) {
+					let result =
+						backet[i].count += count;
+					backet[i].sum = backet[i].price * backet[i].count;
+					return console.log(backet);
+				}
+
+			}
+
+			pushBacket(index, count, goods);
+
+			return console.log(backet);
+
+		}
+
+
+		//показывает все доступные товары и их цены
+		function showGoods(g) {
+			var order = g.reduce(function(prev, curr) {
+				return [...prev, curr.name + '<input type="number" value="1"> <button class="button">в корзину</button>', curr.price + ' рублей' + '<br>']
+			}, ['на сегодня в наличии :' + '<br>']).join('<br>');
+			document.getElementById('catalog').innerHTML = order;
+		}
+
+
+		//выводит сумму товаров в корзине
+		function countBasketPrice(backet) {
+			var initialValue = 0;
+			var sum = backet.reduce(
+				(result, Val) => result + Val.sum,
+				initialValue
+			);
+
+			let forSum = document.createElement('div');
+			forSum.classList.add('forSum');
+			if (sum === 0) {
+				forSum.textContent = 'пусто';
+				return document.getElementById('baket').appendChild(forSum);
+			}
+			forSum.textContent = 'итого' + sum;
+			return document.getElementById('baket').appendChild(forSum);
+		}
+
+		//показывает что лежит в корзине
+		function showBacket(g) {
+			let order = g.reduce(function(prev, curr) {
+				return [...prev, curr.name, curr.count + ' шт', curr.sum + ' рублей' + '<br>']
+			}, ['В корзине :']).join('<br>');
+			document.getElementById('baket').innerHTML = order;
+		}
+
+
+		//добавляем в корзину по индексу товара второй параметр количество раскоментируете добавится в корзину
+
+		//				addGoodBacket(2, );
+		// addGoodBacket(0, 2);
+		// addGoodBacket(2, 2);
+
+
+
+		//вызвана функция показа товара приняла - товары
+		showGoods(goods);
+
+		//вызвана функция показа содержания корзины  приняла - корзину
+		showBacket(backet);
+
+		//вызвана ф-я сумма товаров в корзине
+		countBasketPrice(backet);
+
+	</script>
+</body>
+
+</html>
