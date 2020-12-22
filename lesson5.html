@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<!--<link rel="stylesheet" href="style.css" /> -->
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		.table {
+			margin: 100px auto;
+			border-spacing: 0;
+			font-size: 20px;
+		}
+
+		.table img {
+			width: 50px;
+		}
+
+		.black {
+			text-align: center;
+			width: 50px;
+			height: 50px;
+			background: #808080;
+			border: 1px solid transparent;
+		}
+
+		.white {
+			text-align: center;
+			width: 50px;
+			height: 50px;
+			background: white;
+			border: 1px solid #808080;
+		}
+
+		.number {
+			text-align: center;
+			padding-right: 10px;
+			font-size: 18px;
+			font-weight: bold;
+		}
+
+	</style>
+</head>
+
+<body>
+	<img src="" alt="">
+	<script>
+		"use strict";
+
+
+		let nameKub = ["a", "b", "c", "d", "e", "f", "g", "h"];
+
+
+
+		let table = document.createElement("table");
+		table.classList.add('table');
+		for (let i = 9; i > 0; i--) {
+			let tr = document.createElement('tr');
+			let number = document.createElement('td');
+			number.className = 'number';
+
+			number.innerHTML = i;
+			tr.appendChild(number);
+
+
+			//заполняем доску фигурами и цветом
+
+			for (let j = 0; j < 8; j++) {
+				let td = document.createElement('td');
+				if (i % 2 == j % 2) {
+					td.className = "white";
+				} else {
+					td.className = "black";
+				}
+				Rasstanovka(i, j, td);
+
+				if (i === 9) {
+					for (let j = 0; j < nameKub.length; j++) {
+						var letter = document.createElement('td');
+						letter.classList.add('number');
+						letter.innerHTML = nameKub[j];
+						tr.appendChild(letter);
+						number.innerHTML = '';
+					}
+					break;
+				}
+				tr.appendChild(td);
+			}
+
+
+			table.appendChild(tr);
+		}
+		document.body.appendChild(table);
+
+		function Rasstanovka(i, j, td) {
+			var figure = ['пешка', 'ладья', 'конь', 'слон', 'ферзь', 'король'];
+
+			for (var g = 0; g < figure.length; g++) {
+				var a = figure[g];
+				switch (a) {
+					case 'пешка':
+						if (i === 2) {
+							td.innerHTML = '<img src="img/пешка_black.png" alt="">';
+						} else if (i === 7) {
+							td.innerHTML = '<img src="img/пешка.png" alt="">';
+						}
+
+						break;
+					case 'ладья':
+						if (i === 1 && j === 0 || i === 1 && j === 7) {
+							td.innerHTML = '<img src="img/ладья_black.png" alt="">';
+						} else if (i === 8 && j === 0 || i === 8 && j === 7) {
+							td.innerHTML = '<img src="img/ладья.png" alt="">';
+						}
+						break;
+					case 'конь':
+						if (i === 1 && j === 1 || i === 1 && j === 6) {
+							td.innerHTML = '<img src="img/конь_black.png" alt="">';
+						} else if (i === 8 && j === 1 || i === 8 && j === 6) {
+							td.innerHTML = '<img src="img/конь.png" alt="">';
+						}
+						break;
+					case 'слон':
+						if (i === 1 && j === 5 || i === 1 && j === 2) {
+							td.innerHTML = '<img src="img/слон_black.png" alt="">';
+						} else if (i === 8 && j === 2 || i === 8 && j === 5) {
+							td.innerHTML = '<img src="img/слон.png" alt="">';
+						}
+						break;
+					case 'ферзь':
+						if (i === 1 && j === 3) {
+							td.innerHTML = '<img src="img/ферзь_black.png" alt="">';
+						} else if (i === 8 && j === 3) {
+							td.innerHTML = '<img src="img/ферзь.png" alt="">';
+						}
+						break;
+					case 'король':
+						if (i === 1 && j === 4) {
+							td.innerHTML = '<img src="img/король_black.png" alt="">';
+						} else if (i === 8 && j === 4) {
+							td.innerHTML = '<img src="img/король.png" alt="">';
+						}
+						break;
+
+
+				}
+
+			}
+
+		}
+
+	</script>
+</body>
+
+</html>
