@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<!--<link rel="stylesheet" href="style.css" /> -->
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			font-size: 20px;
+		}
+
+		#catalog {
+			margin: 100px auto;
+			width: 680px;
+			min-height: 300px;
+		}
+
+		#catalog input {
+			margin-left: 50px;
+			margin-right: 50px;
+			width: 50px;
+			height: 20px;
+		}
+
+		.good {
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			padding: 20px 0 20px 20px;
+			margin-top: 5px;
+			background: #eee;
+			width: 100%;
+			border-bottom: 1px solid #808080;
+		}
+
+		.good div: not:firstChild {
+			width: 130px;
+
+		}
+
+		.good img {
+			width: 70px;
+			cursor: pointer;
+		}
+
+		.good div {
+			padding-right: 10px;
+			margin-right: 10px;
+			border-right: 1px solid #808080;
+		}
+
+		#backet {
+			float: right;
+			margin-bottom: 10px;
+			margin-right: 40px;
+			width: 580px;
+			min-height: 80px;
+			border: 1px solid #808080;
+		}
+
+		.button {
+			font-size: 16px;
+			cursor: pointer;
+		}
+
+		.blockBigImages {
+			width: 100%;
+			height: 100%;
+			background: #000;
+			position: fixed;
+			z-index: 99999;
+		}
+
+		.galleryWrapper__screen {
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: #222;
+			opacity: 0.8;
+			position: fixed;
+			top: 0;
+			z-index: 100;
+			display: block;
+			text-align: center;
+		}
+
+		.galleryWrapper__image {
+			max-height: 80%;
+			max-width: 80%;
+			z-index: 101;
+			position: absolute;
+			margin: auto;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			right: 0;
+		}
+
+		.galleryWrapper__close {
+			z-index: 101;
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
+
+	</style>
+</head>
+
+<body>
+<!-- Логику изменил - так стало гораздо легче писать СПАСИБО за пример с чемоданом - как я раньше не видел - небольших 2 вопроса если на вскидку ответите 1 - в корзине где вывщдится сумма и т д какой то	undefine всю голову сломал - код уже сниться - не нащел  2 если делали получить value из input - так работает но код какойто .... -->
+
+	<div id="catalog">
+
+	</div>
+
+	<div id="backet">
+
+	</div>
+
+	<script>
+		"use strict";
+
+
+		const gallery = {
+			settings: {
+				catalogWripper: null,
+				previewSelector: '.mySuperGallery',
+				openedImageWrapperClass: 'galleryWrapper',
+				openedImageClass: 'galleryWrapper__image',
+				openedImageScreenClass: 'galleryWrapper__screen',
+				openedImageCloseBtnClass: 'galleryWrapper__close',
+				openedImageCloseBtnSrc: 'images/close.png',
+				imageNotFoundSrc: 'images/duck.gif',
+			},
+
+			/**
+			 * Инициализирует галерею, ставит обработчик события.
+			 * @param {Object} settings Объект настроек для галереи.
+			 */
+			init(settings) {
+				this.settings = Object.assign(this.settings, settings);
+				this.catalogWripper = document.querySelector('#catalog');
+				// Находим элемент, где будут превью картинок и ставим обработчик на этот элемент,
+				// при клике на этот элемент вызовем функцию containerClickHandler в нашем объекте
+				// gallery и передадим туда событие MouseEvent, которое случилось.
+				document
+				this.catalogWripper
+					.addEventListener('click', event => this.containerClickHandler(event));
+			},
+
+			/**
+			 * Обработчик события клика для открытия картинки.
+			 * @param {MouseEvent} event Событие клики мышью.
+			 * @param {HTMLElement} event.target Событие клики мышью.
+			 */
+			containerClickHandler(event) {
+				// Если целевой тег не был картинкой, то ничего не делаем, просто завершаем функцию.
+				if (event.target.tagName !== 'IMG') {
+					return;
+				}
+
+				// Пробуем загрузить картинку, если картинка загружена - показываем картинку с полученным из
+				// целевого тега (data-full_image_url аттрибут), если картинка не загрузилась - показываем картинку-заглушку.
+				const img = new Image();
+				img.onload = () => this.openImage(event.target.dataset.full_image_url);
+				img.onerror = () => this.openImage(this.settings.imageNotFoundSrc);
+				img.src = event.target.dataset.full_image_url;
+			},
+
+			/**
+			 * Открывает картинку.
+			 * @param {string} src Ссылка на картинку, которую надо открыть.
+			 */
+			openImage(src) {
+				// Получаем контейнер для открытой картинки, в нем находим тег img и ставим ему нужный src.
+				this.getScreenContainer().querySelector(`.${this.settings.openedImageClass}`).src = src;
+			},
+
+			/**
+			 * Возвращает контейнер для открытой картинки, либо создает такой контейнер, если его еще нет.
+			 * @returns {Element}
+			 */
+			getScreenContainer() {
+				// Получаем контейнер для открытой картинки.
+				const galleryWrapperElement = document.querySelector(`.${this.settings.openedImageWrapperClass}`);
+				// Если контейнер для открытой картинки существует - возвращаем его.
+				if (galleryWrapperElement) {
+					return galleryWrapperElement;
+				}
+
+				// Возвращаем полученный из метода createScreenContainer контейнер.
+				return this.createScreenContainer();
+			},
+
+			/**
+			 * Создает контейнер для открытой картинки.
+			 * @returns {HTMLElement}
+			 */
+			createScreenContainer() {
+				// Создаем сам контейнер-обертку и ставим ему класс.
+				const galleryWrapperElement = document.createElement('div');
+				galleryWrapperElement.classList.add(this.settings.openedImageWrapperClass);
+
+				// Создаем контейнер занавеса, ставим ему класс и добавляем в контейнер-обертку.
+				const galleryScreenElement = document.createElement('div');
+				galleryScreenElement.classList.add(this.settings.openedImageScreenClass);
+				galleryWrapperElement.appendChild(galleryScreenElement);
+
+				// Создаем картинку для кнопки закрыть, ставим класс, src и добавляем ее в контейнер-обертку.
+				const closeImageElement = new Image();
+				closeImageElement.classList.add(this.settings.openedImageCloseBtnClass);
+				closeImageElement.src = this.settings.openedImageCloseBtnSrc;
+				closeImageElement.addEventListener('click', () => this.close());
+				galleryWrapperElement.appendChild(closeImageElement);
+
+				// Создаем картинку, которую хотим открыть, ставим класс и добавляем ее в контейнер-обертку.
+				const image = new Image();
+				image.classList.add(this.settings.openedImageClass);
+				galleryWrapperElement.appendChild(image);
+
+				// Добавляем контейнер-обертку в тег body.
+				document.body.appendChild(galleryWrapperElement);
+
+				// Возвращаем добавленный в body элемент, наш контейнер-обертку.
+				return galleryWrapperElement;
+			},
+
+			/**
+			 * Закрывает (удаляет) контейнер для открытой картинки.
+			 */
+			close() {
+				document.querySelector(`.${this.settings.openedImageWrapperClass}`).remove();
+			}
+		};
+
+		const catalog = {
+			catalogWripper: null,
+			backetwripper: {},
+			bigImages: {},
+			goods: [{
+					id_goods: 1,
+					url: 'images/футболка.jpg',
+					name: "футболка",
+					price: 1000
+				},
+				{
+					id_goods: 2,
+					url: 'images/костюм.jpg',
+					name: "костюм",
+					price: 3000,
+					count: 1
+				},
+				{
+					id_goods: 3,
+					url: 'images/пальто.jpg',
+					name: "пальто",
+					price: 8000,
+					count: 1
+				},
+				{
+					id_goods: 4,
+					url: 'images/пуховик.jpg',
+					name: "пуховик",
+					price: 4000,
+					count: 1
+				}
+			],
+			init(catalogBlockId, backetwripper, bigImages) {
+				this.catalogWripper = document.querySelector(`#${catalogBlockId}`);
+				this.backetwripper = backetwripper;
+				this.bigImages = bigImages;
+				this.render();
+				this.addEventHandlers();
+
+			},
+
+			//рисуем
+			render() {
+				if (this.getCatalogGoodsLength() > 0) {
+					this.showCatalogGoods();
+				} else {
+					this.renderEmptyCatalog();
+				}
+			},
+			//события на всем каталоге
+			addEventHandlers() {
+				this.catalogWripper.addEventListener('click', event =>
+					this.addBasket(event));
+			},
+
+			getUserId_goods() {
+				if (event.target.tagName === 'BUTTON') {
+					let UserId_goods = event.path[1].parentElement.childNodes[1].innerHTML;
+					return +UserId_goods;
+				}
+
+			},
+			getUserCount() {
+				if (event.target.tagName === 'BUTTON') {
+					let userCount = event.path[1].parentElement.childNodes[9].getElementsByTagName("input")[0].value;
+					console.log(userCount);
+					return +userCount;
+				}
+			},
+
+
+			// добавим в kорзину
+			addBasket(event) {
+				if (event.target.tagName !== 'BUTTON') return;
+				const id_goods = this.getUserId_goods();
+				this.backetwripper.addBasket(id_goods);
+
+			},
+
+			getCatalogGoodsLength() {
+				return this.goods.length;
+			},
+
+			//выводим товары
+			showCatalogGoods() {
+				this.catalogWripper.innerHTML = '';
+				this.goods.forEach(good => {
+					this.catalogWripper.insertAdjacentHTML('beforeend', this.renderCatalogGood(good));
+				});
+			},
+
+			//отдельный товар
+			renderCatalogGood(good) {
+				return `<div class="good">
+                   <div>${good.id_goods}</div>
+				   <div><img  src = ${good.url} data-full_image_url='images/${good.url}'></div>
+                    <div><b>Наименование </b>: ${good.name}</div>
+				    <div><b>Стоимость</b>: ${good.price}</div>
+                    <div><b>Количество</b><input type="number" value="1"> </div>
+                    <div><button class="button">в корзину</button></div>
+                   </div>`;
+			},
+
+			//усли товаров нет
+			renderEmptyCatalog() {
+				this.catalogWripper.innerHTML = '';
+				this.catalogWripper.insertAdjacentHTML('beforeend', `Товар пока не подвезли :).`);
+			},
+
+		};
+
+
+		//корзина
+		const backetwripper = {
+			backetBlock: null,
+			clrCartButton: null,
+			catalogGoods: [],
+			goods: [],
+
+			// инициализация
+			init(backetBlockId, clrCartButton, catalogGoods) {
+				this.backetBlock = document.querySelector(`#${backetBlockId}`);
+				this.clrCartButton = document.querySelector(`.${clrCartButton}`);
+				this.catalogGoods = catalogGoods;
+
+				this.addEventHandlers();
+				this.render();
+			},
+
+			//события
+			addEventHandlers() {
+				this.backetBlock.addEventListener('click', event => this.addBasket(event));
+			},
+
+			//очищаем товар
+			dropBacketGood() {
+				this.goods = [];
+				this.render();
+			},
+
+
+			//рисуем корзину
+			render() {
+
+				if (this.getBacketGoodsLength() > 0) {
+					this.renderCartList()
+
+				} else {
+					this.renderEmptybacketWripper();
+				}
+			},
+
+
+
+			renderCartList() {
+				this.goods.forEach(good => {
+					this.backetBlock.insertAdjacentHTML('beforeend', this.renderBacketGoods(good));
+
+				});
+			},
+
+
+			findGood(id_goods) {
+				return this.catalogGoods.find(good => good.id_goods === id_goods);
+			},
+
+
+			// добавим товар
+			addBasket(id_goods) {
+				const good = this.findGood(id_goods);
+
+				if (id_goods) {
+					this.goods.push({
+						...good
+					});
+					this.render();
+				} else {
+					alert('Что то пошло ни так!');
+				}
+
+			},
+
+			// товары в корзине
+			getBacketGoodsLength() {
+				return this.goods.length;
+			},
+			//cумма товаров
+			getTotalSum() {
+				let total =
+					this.goods.reduce((price, good) => {
+						return price + good.price;
+					}, 0);
+				return +total;
+			},
+			//количество товаров
+			getTotalCount() {
+				let totalCount =
+					this.goods.reduce((price, good) => {
+						return price + good.count;
+					}, 0);
+				return +totalCount;
+			},
+
+			//если пусто
+			renderEmptybacketWripper() {
+				this.backetBlock.innerHTML = '';
+				this.backetBlock.insertAdjacentHTML('beforeend', 'Корзина пуста.');
+			},
+
+
+			renderBacketGoods() {
+				this.backetBlock.innerHTML = '';
+				this.goods.forEach(good => {
+					this.backetBlock.insertAdjacentHTML('beforeend', this.renderBacketItem(good));
+
+				});
+				this.backetBlock.insertAdjacentHTML('beforeend', `В корзине ${this.getTotalCount()} товара(ов) на сумму ${this.getTotalSum()}`);
+
+			},
+
+
+			//отдельный товар
+			renderBacketItem(good) {
+				return `<div class="good">
+                   <div>${good.id_goods}</div>
+                    <div><b>Наименование </b>: ${good.name}</div>
+                    <div><b>Количество</b>${good.count}</div>
+                    <div><b>Стоимость</b>: ${good.price}</div>
+                    <div><button class="button">удалить</button></div>
+                    </div>`;
+
+
+			},
+			//события на всем каталоге
+			addEventHandlers() {
+				this.backetBlock.addEventListener('click', event =>
+					this.removeBasket(event));
+			},
+			removeBasket(event) {
+				if (event.target.tagName === 'BUTTON') {
+					let notNeed = event.path[1].parentElement.childNodes[1].innerHTML;
+
+					for (var rem in this.goods) {
+						if (this.goods[rem].id_goods === +notNeed) {
+							this.goods.splice(rem, 1);
+							this.render();
+						}
+					}
+				}
+			}
+		};
+
+		catalog.init('catalog', backetwripper);
+		backetwripper.init('backet', 'button', catalog.goods);
+		window.onload = () => gallery.init({
+			previewSelector: '.galleryPreviewsContainer'
+		});
+
+	</script>
+</body>
+
+</html>

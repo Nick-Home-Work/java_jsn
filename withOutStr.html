@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<!--<link rel="stylesheet" href="style.css" /> -->
+	<style>
+
+
+	</style>
+</head>
+
+<body>
+	<img src="" alt="">
+	<script>
+		"use strict";
+// попытался делением определять - голову сломал - хотя вроде в математике не совсем деревянный - пробовал for - тоже не сообразил
+		loop:
+			while (true) {
+				let r = prompt('введите числа от 1 до 999');
+				//преобразовал в массив чисел  - не стал работать со строкой
+				const arr = Array.from(String(r),Number).reverse();
+				if (arr.length > 3) {
+					alert('Вы ввели что то не то!');
+					continue loop;
+				}
+				//наверно тоже костыль - или так пишут??? - работает
+				let bar = undefined;
+
+				var objNumber = {};
+				objNumber['сотни'] = arr[2];
+				objNumber['десятки'] = arr[1];
+				objNumber['единицы'] = arr[0];
+                // проверка если пусто присвоил 0
+				for (var i in objNumber) {
+					if (objNumber[i] === bar) {
+						objNumber[i] = 0;
+					}
+
+				}
+				console.log(objNumber);
+				break;
+			}
+
+	</script>
+</body>
+
+</html>
