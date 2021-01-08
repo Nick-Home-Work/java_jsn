@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<!--<link rel="stylesheet" href="style.css" /> -->
+	<style>
+
+
+	</style>
+</head>
+
+<body>
+
+	<script>
+		"use strict";
+//задание1
+//		в 7 уроке - змейеа  - там сполошные замыкаеия - практически каждый метод внутри себя вызывает другой метод - как минимум - счетчик - можно попробовать устроить замвканием - вывод препятствий
+
+		//задание 2
+if (!("a" in window)) {
+    var a = 1;
+}
+alert(a);//undefined a - берется из window -а там не определено
+
+
+var b = function a(x) {
+    x && a(--x);
+};
+
+alert(a); // здесь function a - переменной а нет - ошибка
+
+function a(x) {
+    return x * 2;
+}
+var a;
+alert(a);// в а - окажется ссылка на функцию - выведет тело функции
+
+
+function b(x, y, a) {
+ arguments[2] = 10;
+    alert(a);
+}
+b(1, 2, 3);// выведется 3 - если надо изменить а - надо обратиться к обьявленной а
+
+function a() {
+    alert(this);
+}
+a.call(null);//call опредилил this - null - он и выведется
+	</script>
+</body>
+
+</html>
